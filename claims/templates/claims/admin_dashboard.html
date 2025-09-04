@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+<section id="admin-dashboard">
+    <h2 style="margin-bottom: 1.5rem;">Admin Dashboard</h2>
+
+    <div class="grid">
+        <article>
+            <h4>Active Backlog</h4>
+            <p style="font-size: 1.5rem;">{{ active_backlog|intcomma }}</p>
+            <small>Claims currently "Under Review"</small>
+        </article>
+        <article>
+            <h4>Flagged for Review</h4>
+            <p style-="font-size: 1.5rem;">{{ flagged_count|intcomma }}</p>
+            <small>Claims requiring priority attention</small>
+        </article>
+        <article>
+            <h4>Potential Recovery</h4>
+            <p style="font-size: 1.5rem;">${{ potential_recovery|floatformat:2|intcomma }}</p>
+            <small>Total billed amount of denied claims</small>
+        </article>
+    </div>
+    <div class="grid">
+        <article>
+            <h4>Recovered This Month</h4>
+            <p style="font-size: 1.5rem;">${{ recovered_this_month|floatformat:2|intcomma }}</p>
+            <small>Total paid amount of claims closed this month</small>
+        </article>
+        <article>
+            <h4>Highest Flagged Claim</h4>
+            <p style="font-size: 1.5rem;">${{ highest_flagged|floatformat:2|intcomma }}</p>
+            <small>Most valuable claim in the priority queue</small>
+        </article>
+        <article>
+            <h4>Overall Denial Rate</h4>
+            <p style="font-size: 1.5rem;">{{ denial_rate|floatformat:1 }}%</p>
+            <small>Percentage of finalized claims that are denied</small>
+        </article>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<div class="main-container">
+    <div>
+        <form 
+            hx-get="{% url 'claims-list' %}" 
+            hx-trigger="change, keyup changed delay:500ms" 
+            hx-target="#claims-table-body"
+            class="grid">
+            <select name="status">
+                <option value="">All Statuses</option>
+                {% for value, display in statuses %}
+                    <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>{{ display }}</option>
+                {% endfor %}
+            </select>
+            <input 
+                type="search" 
+                name="insurer" 
+                placeholder="Search by Insurer Name..." 
+                value="{{ current_insurer|default:'' }}">
+        </form>
+    </div>
+    
+    <div class="claims-list-row">
+        <figure>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Claim ID</th>
+                        <th>Patient</th>
+                        <th>Billed</th>
+                        <th>Patient</th>
+                        <th>Status</th>
+                        <th>Insurer Name</th>
+                        <th>Discharge Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="claims-table-body">
+                    {% include 'claims/partials/claim_table_rows.html' with claims=claims %}
+                </tbody>
+            </table>
+        </figure>
+    </div>
+
+    <div class="details-row">
+        <div id="claim-detail-view">
+            {% if first_claim %}
+                {% include 'claims/partials/claim_detail.html' with claim=first_claim %}
+            {% else %}
+                <article><p>No claims found.</p></article>
+            {% endif %}
+        </div>
+          <div id="notes-section-container" hx-swap-oob="true">
+            {% if first_claim %}
+                {% include 'claims/partials/claim_note.html' with claim=first_claim %}
+            {% else %}
+                <article><h4>Notes</h4><p>Select a claim to view or add notes.</p></article>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

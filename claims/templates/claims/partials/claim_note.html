@@ -1,0 +1,30 @@
+<div id="notes-section">
+    <article>
+        <h4>Existing Notes</h4>
+        <div class="notes-list">
+            {% for note in claim.notes.all reversed %}
+                <article class="note">
+                    <div class="note-header">
+                        <strong>{{ note.author.username }}</strong>
+                        <span>{{ note.created_at|date:"m/d/Y" }}</span>
+                    </div>
+                    <p class="note-body">{{ note.text }}</p>
+                </article>
+            {% empty %}
+                <p>No notes for this claim yet.</p>
+            {% endfor %}
+        </div>
+    </article>
+
+    <article>
+        <h4>Add a New Note</h4>
+        <form 
+            hx-post="{% url 'add-note' claim.id %}"
+            hx-target="#notes-section"
+            hx-swap="outerHTML">
+            {% csrf_token %}
+            <textarea name="note_text" placeholder="Enter your note here..." required></textarea>
+            <button type="submit">Save Note</button>
+        </form>
+    </article>
+</div>

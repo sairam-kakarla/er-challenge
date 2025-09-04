@@ -1,0 +1,22 @@
+{% load humanize %}
+<article>
+    <header>
+        <strong>Claim Details: #{{ claim.id }}</strong>
+        <span class="status-{{ claim.status|slugify }}">{{ claim.status }}</span>
+    </header>
+    
+    <p><strong>Patient:</strong> {{ claim.patient_name }}</p>
+    <p><strong>Insurer:</strong> {{ claim.insurer_name }}</p>
+    <p><strong>Discharge Date:</strong> {{ claim.discharge_date|date:"m/d/Y" }}</p>
+    <p><strong>Billed:</strong> ${{ claim.billed_amount|intcomma }}</p>
+    <p><strong>Paid:</strong> ${{ claim.paid_amount|intcomma }}</p>
+    <p><strong>CPT Codes:</strong> {{ claim.details.cpt_codes }}</p>
+    {% if claim.details.denial_reason %}
+    <p><strong>Denial Reason:</strong> {{ claim.details.denial_reason }}</p>
+    {% endif %}
+
+    <hr>
+</article>
+<div id="notes-section-container" hx-swap-oob="true">
+{% include 'claims/partials/claim_note.html' with claim=claim %}
+</div>

@@ -1,0 +1,11 @@
+<button
+    hx-post="{% url 'flag-claim' claim.id %}"
+    hx-target="#flag-button-container-{{ claim.id }}"
+    hx-swap="innerHTML"
+    class="{% if claim.is_flagged %}secondary{% endif %}">
+    {% if claim.is_flagged %}
+        ✅ 
+    {% else %}
+        🚩
+    {% endif %}
+</button>

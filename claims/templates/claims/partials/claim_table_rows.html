@@ -1,0 +1,27 @@
+{% load humanize %}
+{% for claim in claims %}
+<tr>
+  <td>{{ claim.id }}</td>
+  <td>{{ claim.patient_name }}</td>
+  <td>{{ claim.billed_amount }}</td>
+  <td>{{ claim.paid_amount }}</td>
+  <td>{{ claim.status }}</td>
+  <td>{{ claim.insurer_name }}</td>
+  <td>{{ claim.discharge_date|date:"m/d/Y" }}</td>
+  <td>
+    <button
+        hx-get="{% url 'claim-detail' claim.id %}"
+        hx-target="#claim-detail-view"
+        class="outline">
+        View
+    </button>
+     <div id="flag-button-container-{{ claim.id }}">
+        {% include 'claims/partials/claim_flag_button.html' with claim=claim %}
+    </div>
+  </td>
+</tr>
+{% empty %}
+<tr>
+  <td colspan="4">No claims match your search criteria.</td>
+</tr>
+{% endfor %}

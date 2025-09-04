@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <article class="grid-container" style="max-width: 500px; margin: auto; padding-top: 2rem;">
+    <div>
+        <h2>Login</h2>
+        
+        {% if form.errors %}
+            <p style="color: var(--pico-color-red-500);">Your username and password didn't match. Please try again.</p>
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+            
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+            
+            <button type="submit">Login</button>
+        </form>
+    </div>
+  </article>
+{% endblock %}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERISA Claims Management System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Make body fill the viewport height */
+            margin: 0;
+        }
+        .main-container {
+            flex-grow: 1; /* Allow main container to grow */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Prevent body scroll */
+        }
+        .claims-list-row {
+            flex-shrink: 0; /* Prevent this row from shrinking */
+            overflow-y: auto; /* Add scrollbar if content overflows */
+            max-height: 45vh; /* Set a max height for the list */
+            border-bottom: 2px solid var(--muted-border-color);
+        }
+        .details-row {
+            flex-grow: 1; /* This row takes remaining space */
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+            gap: 1.5rem;
+            padding-top: 1rem;
+            overflow-y: auto;
+        }
+        .notes-list {
+    max-height: 12rem; /* Limits the height */
+    overflow-y: auto;  /* Adds a scrollbar only when needed */
+    padding-right: 0.5rem; /* Prevents scrollbar from covering text */
+}
+
+.note {
+    font-size: 0.9rem; /* Makes the overall note text smaller */
+    padding: 0.75rem 0;
+}
+.note-header {
+    display: flex;
+    justify-content: space-between; /* Pushes author to the left, date to the right */
+    align-items: center;
+    color: var(--muted-color);
+    font-size: 0.85rem;
+}
+.note-body {
+    margin-top: 0.25rem;
+}
+.note:last-child {
+    border-bottom: none;
+}
+    </style>
+</head>
+<body>
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        })
+    </script>
+<main class="container">
+        <nav>
+            <ul>
+                <li><strong>ERISA Claims Dashboard</strong></li>
+            </ul>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li>Welcome, {{ user.username }}</li>
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="margin-bottom: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="secondary outline" style="margin-bottom: 0;">Logout</button>
+                        </form>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>
