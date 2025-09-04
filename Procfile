@@ -1,0 +1,1 @@
+web: gunicorn erisa_api.wsgi
